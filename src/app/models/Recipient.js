@@ -18,10 +18,6 @@ class Recipient extends Model {
     );
     return this;
   }
-
-  static associate(models) {
-    this.hasOne(models.User, { foreignKey: 'avatar_id', as: 'avatar' });
-  }
 }
 
 export default Recipient;
