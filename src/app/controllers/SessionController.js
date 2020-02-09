@@ -35,7 +35,7 @@ class SessionController {
         if (err.name === 'ValidationError') {
           res.status(400);
         } else {
-          err.name = 'Error';
+          // err.name = 'Error';
           err.message = 'Invalid credentials';
           res.status(401);
         }

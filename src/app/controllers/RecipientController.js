@@ -1,4 +1,6 @@
 import Recipient from '../models/Recipient';
+import User from '../models/User';
+
 import { storeSchema, updateSchema } from '../validations/recipient';
 
 class RecipientController {
@@ -14,14 +16,26 @@ class RecipientController {
   store(req, res) {
     storeSchema
       .validate(req.body)
-      .then(() => {
+      .then(async () => {
+        return User.findOne({
+          where: { id: req.userId, role: 'admin' },
+        });
+      })
+      .then(user => {
+        if (!user) {
+          res.status(401);
+          throw new Error('User unauthorized');
+        }
         return Recipient.create(req.body);
       })
       .then(recipient => {
         return res.status(200).json(recipient);
       })
       .catch(err => {
-        return res.status(400).json({ [err.name]: err.message });
+        if (!res.statusCode) {
+          res.status(400);
+        }
+        return res.json({ [err.name]: err.message });
       });
   }
 
