@@ -16,6 +16,11 @@ class Recipient extends Model {
         sequelize,
       }
     );
+    return this;
+  }
+
+  static associate(models) {
+    this.hasOne(models.User, { foreignKey: 'avatar_id', as: 'avatar' });
   }
 }
 

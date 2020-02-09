@@ -7,10 +7,7 @@ const storeSchema = yup.object().shape({
   complement: yup.string(),
   state: yup.string().required(),
   city: yup.string().required(),
-  zipcode: yup
-    .number()
-    .required()
-    .min(8),
+  zipcode: yup.number().required(),
 });
 
 const updateSchema = yup.object().shape({
