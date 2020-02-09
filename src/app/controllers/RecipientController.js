@@ -1,5 +1,5 @@
 import Recipient from '../models/Recipient';
-import { schemaToCreate, schemaToUpdate } from '../schemas/recipientSchema';
+import { storeSchema, updateSchema } from '../validations/recipient';
 
 class RecipientController {
   index(req, res) {
@@ -12,7 +12,7 @@ class RecipientController {
   }
 
   store(req, res) {
-    schemaToCreate
+    storeSchema
       .validate(req.body)
       .then(() => {
         return Recipient.create(req.body);
@@ -28,7 +28,7 @@ class RecipientController {
   update(req, res) {
     const { id } = req.params;
 
-    schemaToUpdate
+    updateSchema
       .validate(req.body)
       .then(() => {
         return Recipient.findByPk(id);

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 import User from '../models/User';
 import authConfig from '../../config/auth';
-import schema from '../schemas/authSchema';
+import storeSchema from '../validations/auth';
 
 class SessionController {
   store(req, res) {
@@ -10,7 +10,7 @@ class SessionController {
     let id;
     let name;
 
-    schema
+    storeSchema
       .validate(req.body)
       .then(() => {
         return User.findOne({ where: { email } });

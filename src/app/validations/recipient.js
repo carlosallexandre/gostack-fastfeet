@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const schemaToCreate = yup.object().shape({
+const storeSchema = yup.object().shape({
   name: yup.string().required(),
   street: yup.string().required(),
   number: yup.number(),
@@ -10,11 +10,10 @@ const schemaToCreate = yup.object().shape({
   zipcode: yup
     .number()
     .required()
-    .min(8)
-    .max(8),
+    .min(8),
 });
 
-const schemaToUpdate = yup.object().shape({
+const updateSchema = yup.object().shape({
   name: yup.string(),
   street: yup.string(),
   number: yup.number(),
@@ -24,4 +23,4 @@ const schemaToUpdate = yup.object().shape({
   zipcode: yup.number(),
 });
 
-export { schemaToCreate, schemaToUpdate };
+export { storeSchema, updateSchema };

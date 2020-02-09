@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const schema = yup.object().shape({
+const storeSchema = yup.object().shape({
   email: yup
     .string()
     .email()
@@ -11,4 +11,4 @@ const schema = yup.object().shape({
     .required(),
 });
 
-export default schema;
+export default storeSchema;
