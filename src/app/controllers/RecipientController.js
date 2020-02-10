@@ -1,5 +1,4 @@
 import Recipient from '../models/Recipient';
-import User from '../models/User';
 
 import { storeSchema, updateSchema } from '../validations/recipient';
 
@@ -16,16 +15,7 @@ class RecipientController {
   store(req, res) {
     storeSchema
       .validate(req.body)
-      .then(async () => {
-        return User.findOne({
-          where: { id: req.userId, role: 'admin' },
-        });
-      })
-      .then(user => {
-        if (!user) {
-          res.status(401);
-          throw new Error('User unauthorized');
-        }
+      .then(() => {
         return Recipient.create(req.body);
       })
       .then(recipient => {
