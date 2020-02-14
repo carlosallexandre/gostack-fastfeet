@@ -26,7 +26,7 @@ class DeliveryController {
         {
           model: Deliveryman,
           as: 'deliveryman',
-          attributes: ['name', 'email'],
+          attributes: ['id', 'name', 'email'],
           include: [
             {
               model: File,
