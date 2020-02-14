@@ -1,3 +1,6 @@
+import Queue from '../../lib/Queue';
+import DeliveryMail from '../jobs/DeliveryMail';
+
 import Delivery from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
@@ -104,7 +107,23 @@ class DeliveryController {
       .then(() => {
         return Delivery.create(req.body);
       })
-      .then(delivery => res.json(delivery))
+      .then(delivery => {
+        return Promise.all([
+          Deliveryman.findByPk(delivery.deliveryman_id, {
+            attributes: ['id', 'name', 'email'],
+          }),
+          Recipient.findByPk(delivery.recipient_id),
+          delivery,
+        ]);
+      })
+      .then(async ([deliveryman, recipient, delivery]) => {
+        await Queue.add(DeliveryMail.key, {
+          deliveryman,
+          recipient,
+          delivery,
+        });
+        return res.json(delivery);
+      })
       .catch(err => {
         return res.status(400).json({ [err.name]: err.message });
       });

@@ -1,5 +1,9 @@
+import Queue from '../../lib/Queue';
+import CancellationMail from '../jobs/CancellationMail';
+
 import Delivery from '../models/Delivery';
 import DeliveryProblem from '../models/DeliveryProblem';
+import Deliveryman from '../models/Deliveryman';
 
 class DeliveryProblemsController {
   async index(req, res) {
@@ -63,7 +67,6 @@ class DeliveryProblemsController {
         'end_date',
         'canceled_at',
         'recipient_id',
-        'deliveryman_id',
         'signature_id',
       ],
       include: [
@@ -72,10 +75,17 @@ class DeliveryProblemsController {
           where: { id },
           attributes: ['id', 'description', 'created_at'],
         },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name', 'email'],
+        },
       ],
     });
 
     await delivery.update({ canceled_at: new Date() });
+
+    await Queue.add(CancellationMail.key, { delivery });
 
     return res.json(delivery);
   }
